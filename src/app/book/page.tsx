@@ -61,9 +61,6 @@ import {
   ServiceWindowType,
   ServiceType
 } from '@/types';
-import WindowPickerCards from '@/components/booking/WindowPickerCards';
-import StripeTrustBadge from '@/components/booking/StripeTrustBadge';
-import InstantEstimate from '@/components/home/InstantEstimate';
 
 // Step definitions for the indicator
 const STEPS = [
@@ -565,12 +562,17 @@ export default function BookPage() {
               </p>
             </div>
 
-            <WindowPickerCards
-              selectedWindow={state.serviceWindow}
-              onSelectWindow={(window) => updateField('serviceWindow', window)}
-              exactDaySelected={!!state.exactDay}
-              onToggleExactDay={(selected) => updateField('exactDay', selected ? new Date() : null)}
-            />
+            <div className="space-y-3">
+              {SERVICE_WINDOWS.map((window) => (
+                <RadioCard
+                  key={window.type}
+                  selected={state.serviceWindow === window.type}
+                  onClick={() => updateField('serviceWindow', window.type)}
+                  title={window.label}
+                  description={window.description}
+                />
+              ))}
+            </div>
 
             <div className="flex gap-4">
               <Button variant="ghost" onClick={prevStep}>
@@ -801,8 +803,17 @@ export default function BookPage() {
               </div>
             </Card>
 
-            {/* Stripe Trust Badge */}
-            <StripeTrustBadge />
+            {/* Trust badges */}
+            <div className="flex items-center justify-center gap-6 py-4 text-sm text-neutral-500">
+              <div className="flex items-center gap-2">
+                <Lock className="w-4 h-4" />
+                <span>Secure payment</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Shield className="w-4 h-4" />
+                <span>Cancel anytime</span>
+              </div>
+            </div>
 
             {/* Stripe placeholder */}
             <Card>

@@ -1,15 +1,8 @@
 'use client';
 
 import { useState, useCallback, useMemo } from 'react';
-import type { BookingFlowState, BookingStep, Obstacle } from '@/types';
-import {
-  calculateSubscriptionPrice,
-  calculateOneTimePrice,
-  isStepComplete,
-  getNextBookingStep,
-  getPreviousBookingStep,
-  getBookingProgress,
-} from '@/lib/utils';
+import { BookingFlowState, BookingStep, LawnSize, TerrainType, Obstacle, PlanFrequency, ServiceWindowType } from '@/types';
+import { calculateSubscriptionPrice, calculateOneTimePrice, isStepComplete, getNextBookingStep, getPreviousBookingStep, getBookingProgress } from '@/lib/utils';
 
 const initialState: BookingFlowState = {
   step: 'address',
@@ -39,56 +32,56 @@ export function useBookingFlow() {
   const [state, setState] = useState<BookingFlowState>(initialState);
 
   // Update a single field
-  const updateField = useCallback(
-    <K extends keyof BookingFlowState>(field: K, value: BookingFlowState[K]) => {
-      setState(prevState => ({ ...prevState, [field]: value }));
-    },
-    []
-  );
+  const updateField = useCallback(<K extends keyof BookingFlowState>(
+    field: K,
+    value: BookingFlowState[K]
+  ) => {
+    setState(prev => ({ ...prev, [field]: value }));
+  }, []);
 
   // Update multiple fields at once
   const updateFields = useCallback((fields: Partial<BookingFlowState>) => {
-    setState(prevState => ({ ...prevState, ...fields }));
+    setState(prev => ({ ...prev, ...fields }));
   }, []);
 
   // Navigate to next step
   const nextStep = useCallback(() => {
     const next = getNextBookingStep(state.step);
     if (next && isStepComplete(state, state.step)) {
-      setState(prevState => ({ ...prevState, step: next }));
+      setState(prev => ({ ...prev, step: next }));
     }
   }, [state]);
 
-  // Navigate to previous step (FIXED: no naming collision)
+  // Navigate to previous step
   const prevStep = useCallback(() => {
-    const prevStepValue = getPreviousBookingStep(state.step);
-    if (prevStepValue) {
-      setState(prevState => ({ ...prevState, step: prevStepValue }));
+    const prev = getPreviousBookingStep(state.step);
+    if (prev) {
+      setState(prev => ({ ...prev, step: prev }));
     }
   }, [state.step]);
 
   // Go to specific step
   const goToStep = useCallback((step: BookingStep) => {
-    setState(prevState => ({ ...prevState, step }));
+    setState(prev => ({ ...prev, step }));
   }, []);
 
   // Toggle obstacle
   const toggleObstacle = useCallback((obstacle: Obstacle) => {
-    setState(prevState => ({
-      ...prevState,
-      obstacles: prevState.obstacles.includes(obstacle)
-        ? prevState.obstacles.filter(o => o !== obstacle)
-        : [...prevState.obstacles, obstacle],
+    setState(prev => ({
+      ...prev,
+      obstacles: prev.obstacles.includes(obstacle)
+        ? prev.obstacles.filter(o => o !== obstacle)
+        : [...prev.obstacles, obstacle],
     }));
   }, []);
 
   // Toggle add-on
   const toggleAddOn = useCallback((addOnId: string) => {
-    setState(prevState => ({
-      ...prevState,
-      addOns: prevState.addOns.includes(addOnId)
-        ? prevState.addOns.filter(a => a !== addOnId)
-        : [...prevState.addOns, addOnId],
+    setState(prev => ({
+      ...prev,
+      addOns: prev.addOns.includes(addOnId)
+        ? prev.addOns.filter(a => a !== addOnId)
+        : [...prev.addOns, addOnId],
     }));
   }, []);
 
@@ -115,7 +108,6 @@ export function useBookingFlow() {
         state.obstacles,
         state.addOns
       );
-
       return {
         basePrice: 0,
         terrainAdjustment: 0,
@@ -144,19 +136,9 @@ export function useBookingFlow() {
 
   // Get completed steps for step indicator
   const completedSteps = useMemo(() => {
-    const steps: BookingStep[] = [
-      'address',
-      'property',
-      'plan',
-      'window',
-      'addons',
-      'contact',
-      'payment',
-      'confirmation',
-    ];
-
+    const steps: BookingStep[] = ['address', 'property', 'plan', 'window', 'addons', 'contact', 'payment', 'confirmation'];
     const currentIndex = steps.indexOf(state.step);
-
+    
     return steps.filter((step, index) => {
       if (index < currentIndex) return true;
       return isStepComplete(state, step);
