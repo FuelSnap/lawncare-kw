@@ -52,13 +52,14 @@ export function useBookingFlow() {
     }
   }, [state]);
 
-  // Navigate to previous step
-  const prevStep = useCallback(() => {
-    const prev = getPreviousBookingStep(state.step);
-    if (prev) {
-      setState(prev => ({ ...prev, step: prev }));
-    }
-  }, [state.step]);
+// Navigate to previous step
+const prevStep = useCallback(() => {
+  const previousStep = getPreviousBookingStep(state.step);
+  if (previousStep) {
+    setState(prevState => ({ ...prevState, step: previousStep }));
+  }
+}, [state.step]);
+
 
   // Go to specific step
   const goToStep = useCallback((step: BookingStep) => {
