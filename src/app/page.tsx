@@ -228,7 +228,7 @@ export default function HomePage() {
               <BeforeAfterGallery />
             </div>
             <div>
-              <EveryVisitChecklist title="Every visit includes" />
+              <EveryVisitChecklist />
             </div>
           </div>
         </div>
