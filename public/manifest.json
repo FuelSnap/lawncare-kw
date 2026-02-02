@@ -1,0 +1,21 @@
+{
+  "name": "CutDay - Zero-Contact Lawn Care",
+  "short_name": "CutDay",
+  "description": "Book in 60 seconds. No calls. Photo proof every cut.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FEFDFB",
+  "theme_color": "#1B4332",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

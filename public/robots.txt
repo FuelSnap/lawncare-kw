@@ -1,0 +1,8 @@
+# CutDay Lawn Care
+# https://cutday.ca
+
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://cutday.ca/sitemap.xml
