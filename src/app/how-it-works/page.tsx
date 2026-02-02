@@ -29,7 +29,7 @@ const steps = [
   {
     number: '04',
     title: 'Confirm — we handle the rest',
-    description: 'Secure checkout, then sit back. You'll get a notification and photo proof after every visit.',
+description: "Secure checkout, then sit back. You'll get a notification and photo proof after every visit.",
     icon: Check,
   },
 ];
