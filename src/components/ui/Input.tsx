@@ -53,8 +53,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               'hover:border-primary/50',
               'focus:border-primary focus:ring-4 focus:ring-primary/10 focus:outline-none',
               'disabled:bg-neutral-lightgray disabled:cursor-not-allowed',
-              leftIcon && 'pl-12',
-              rightIcon && 'pr-12',
+              leftIcon ? 'pl-12' : undefined,
+rightIcon ? 'pr-12' : undefined,
               error && 'border-error focus:border-error focus:ring-error/20',
               className
             )}
