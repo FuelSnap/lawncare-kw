@@ -563,15 +563,17 @@ export default function BookPage() {
             </div>
 
             <div className="space-y-3">
-              {SERVICE_WINDOWS.map((window) => (
-                <RadioCard
-                  key={window.type}
-                  selected={state.serviceWindow === window.type}
-                  onClick={() => updateField('serviceWindow', window.type)}
-                  title={window.label}
-                  description={window.description}
-                />
-              ))}
+             {SERVICE_WINDOWS.map((window) => (
+  <RadioCard
+    key={window.type}
+    name="serviceWindow"
+    label={window.label}
+    description={window.description}
+    checked={state.serviceWindow === window.type}
+    onChange={() => updateField('serviceWindow', window.type)}
+  />
+))}
+
             </div>
 
             <div className="flex gap-4">
