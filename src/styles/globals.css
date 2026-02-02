@@ -7,15 +7,30 @@
 
 :root {
   --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
-  
-  /* Premium Color Tokens */
-  --color-primary: #1a2e1a;
-  --color-accent: #c4704b;
+
+  /* Premium Brand Tokens (used via custom CSS, not Tailwind classes) */
+  --color-primary: #1a2e1a; /* deep forest */
+  --color-accent: #c4704b;  /* warm accent */
+
   --color-surface: #fafafa;
   --color-surface-elevated: #ffffff;
-  
+
+  /* Semantic tokens */
+  --color-success: #166534; /* green-800-ish */
+  --color-success-bg: #dcfce7; /* green-100-ish */
+
+  --color-warning: #92400e; /* amber-800-ish */
+  --color-warning-bg: #ffedd5; /* amber-100-ish */
+
+  --color-error: #991b1b; /* red-800-ish */
+  --color-error-bg: #fee2e2; /* red-100-ish */
+
   /* Focus ring */
-  --focus-ring: 0 0 0 2px rgba(26, 46, 26, 0.2);
+  --focus-ring: 0 0 0 2px rgba(26, 46, 26, 0.18);
+
+  /* Premium shadows */
+  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.06);
+  --shadow-card-hover: 0 14px 42px rgba(0, 0, 0, 0.08);
 }
 
 @layer base {
@@ -54,26 +69,29 @@
   }
 
   ::selection {
-    @apply bg-muted text-foreground;
+    @apply bg-neutral-200 text-neutral-900;
   }
 }
 
 @layer components {
   /* ═══════════════════════════════════════════════════
-     BUTTONS - Premium, Minimal
+     BUTTONS - Premium, Minimal (no custom Tailwind colors)
      ═══════════════════════════════════════════════════ */
-  
+
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2;
     @apply px-6 py-3 min-h-[48px];
-    @apply bg-primary-900 text-white font-medium;
+    @apply text-white font-medium;
     @apply rounded-lg;
     @apply transition-all duration-200 ease-out;
-    @apply hover:bg-primary-800;
     @apply active:scale-[0.98];
-    @apply focus-visible:ring-2 focus-visible:ring-primary-900 focus-visible:ring-offset-2;
-    @apply disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary-900;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+
+    background: var(--color-primary);
   }
+
+  .btn-primary:hover { filter: brightness(1.05); }
+  .btn-primary:active { filter: brightness(0.98); }
 
   .btn-secondary {
     @apply inline-flex items-center justify-center gap-2;
@@ -83,7 +101,6 @@
     @apply transition-all duration-200 ease-out;
     @apply hover:bg-neutral-50 hover:border-neutral-300;
     @apply active:scale-[0.98];
-    @apply focus-visible:ring-2 focus-visible:ring-primary-900 focus-visible:ring-offset-2;
   }
 
   .btn-ghost {
@@ -98,13 +115,16 @@
   .btn-accent {
     @apply inline-flex items-center justify-center gap-2;
     @apply px-6 py-3 min-h-[48px];
-    @apply bg-accent text-white font-medium;
+    @apply text-white font-medium;
     @apply rounded-lg;
     @apply transition-all duration-200 ease-out;
-    @apply hover:bg-accent-hover;
     @apply active:scale-[0.98];
-    @apply focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2;
+
+    background: var(--color-accent);
   }
+
+  .btn-accent:hover { filter: brightness(1.05); }
+  .btn-accent:active { filter: brightness(0.98); }
 
   /* ═══════════════════════════════════════════════════
      CARDS - Elevated & Flat
@@ -116,11 +136,14 @@
   }
 
   .card-elevated {
-    @apply bg-white rounded-xl;
-    @apply shadow-card;
+    @apply bg-white rounded-xl border border-neutral-200;
     @apply p-6;
-    @apply transition-shadow duration-200;
-    @apply hover:shadow-card-hover;
+    box-shadow: var(--shadow-card);
+    transition: box-shadow 200ms ease;
+  }
+
+  .card-elevated:hover {
+    box-shadow: var(--shadow-card-hover);
   }
 
   .card-interactive {
@@ -140,8 +163,15 @@
     @apply transition-all duration-200;
     @apply placeholder:text-neutral-400;
     @apply hover:border-neutral-300;
-    @apply focus:border-primary-500 focus:ring-2 focus:ring-primary-100;
-    @apply disabled:bg-neutral-100 disabled:cursor-not-allowed;
+  }
+
+  .input-field:focus {
+    border-color: rgba(26, 46, 26, 0.35);
+    box-shadow: var(--focus-ring);
+  }
+
+  .input-field:disabled {
+    @apply bg-neutral-100 cursor-not-allowed;
   }
 
   .input-label {
@@ -149,7 +179,7 @@
   }
 
   .input-error {
-    @apply border-error focus:border-error focus:ring-error-light;
+    border-color: rgba(153, 27, 27, 0.5);
   }
 
   .input-hint {
@@ -160,25 +190,13 @@
      LAYOUT - Sections & Containers
      ═══════════════════════════════════════════════════ */
 
-  .section {
-    @apply py-20 md:py-28;
-  }
+  .section { @apply py-20 md:py-28; }
+  .section-sm { @apply py-12 md:py-16; }
 
-  .section-sm {
-    @apply py-12 md:py-16;
-  }
-
-  .container {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
-  }
-
-  .container-narrow {
-    @apply max-w-4xl mx-auto px-4 sm:px-6;
-  }
-
-  .container-wide {
-    @apply max-w-8xl mx-auto px-4 sm:px-6 lg:px-8;
-  }
+  .container { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8; }
+  .container-narrow { @apply max-w-4xl mx-auto px-4 sm:px-6; }
+  /* max-w-8xl is NOT default Tailwind; use max-w-7xl or define in config */
+  .container-wide { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8; }
 
   /* ═══════════════════════════════════════════════════
      NAVIGATION - Sticky Header
@@ -202,7 +220,7 @@
   }
 
   /* ═══════════════════════════════════════════════════
-     CALENDAR - Premium UI
+     CALENDAR - Premium UI (semantic via vars, not Tailwind colors)
      ═══════════════════════════════════════════════════ */
 
   .calendar-day {
@@ -215,31 +233,29 @@
 
   .calendar-day-available {
     @apply calendar-day;
-    @apply bg-success-light text-success-dark;
-    @apply hover:bg-success/20;
+    color: var(--color-success);
+    background: var(--color-success-bg);
   }
 
   .calendar-day-limited {
     @apply calendar-day;
-    @apply bg-warning-light text-warning-dark;
-    @apply hover:bg-warning/20;
+    color: var(--color-warning);
+    background: var(--color-warning-bg);
   }
 
   .calendar-day-booked {
     @apply calendar-day;
-    @apply bg-neutral-100 text-neutral-400;
-    @apply cursor-not-allowed;
+    @apply bg-neutral-100 text-neutral-400 cursor-not-allowed;
   }
 
   .calendar-day-past {
     @apply calendar-day;
-    @apply text-neutral-300;
-    @apply cursor-not-allowed;
+    @apply text-neutral-300 cursor-not-allowed;
   }
 
   .calendar-day-selected {
-    @apply calendar-day;
-    @apply bg-primary-900 text-white;
+    @apply calendar-day text-white;
+    background: var(--color-primary);
   }
 
   /* ═══════════════════════════════════════════════════
@@ -255,7 +271,10 @@
     @apply flex items-center justify-between gap-4;
     @apply text-base font-medium text-neutral-900;
     @apply transition-colors duration-200;
-    @apply hover:text-primary-700;
+  }
+
+  .accordion-trigger:hover {
+    color: var(--color-primary);
   }
 
   .accordion-content {
@@ -266,13 +285,8 @@
      STEPPER - Booking Flow
      ═══════════════════════════════════════════════════ */
 
-  .stepper {
-    @apply flex items-center gap-2;
-  }
-
-  .stepper-step {
-    @apply flex items-center gap-2;
-  }
+  .stepper { @apply flex items-center gap-2; }
+  .stepper-step { @apply flex items-center gap-2; }
 
   .stepper-number {
     @apply w-8 h-8 rounded-full;
@@ -282,11 +296,13 @@
   }
 
   .stepper-number-active {
-    @apply bg-primary-900 text-white;
+    @apply text-white;
+    background: var(--color-primary);
   }
 
   .stepper-number-complete {
-    @apply bg-success text-white;
+    @apply text-white;
+    background: var(--color-success);
   }
 
   .stepper-number-inactive {
@@ -294,8 +310,7 @@
   }
 
   .stepper-label {
-    @apply text-sm font-medium text-neutral-600;
-    @apply hidden md:block;
+    @apply text-sm font-medium text-neutral-600 hidden md:block;
   }
 
   .stepper-connector {
@@ -307,21 +322,19 @@
      ═══════════════════════════════════════════════════ */
 
   .pricing-card {
-    @apply card relative;
-    @apply flex flex-col;
+    @apply card relative flex flex-col;
   }
 
   .pricing-card-popular {
-    @apply card-elevated relative;
-    @apply border-2 border-primary-900;
-    @apply flex flex-col;
+    @apply card-elevated relative flex flex-col;
+    border-width: 2px;
+    border-color: rgba(26, 46, 26, 0.35);
   }
 
   .pricing-badge {
     @apply absolute -top-3 left-1/2 -translate-x-1/2;
-    @apply bg-primary-900 text-white;
-    @apply px-3 py-1 text-xs font-semibold uppercase tracking-wide;
-    @apply rounded-full;
+    @apply text-white px-3 py-1 text-xs font-semibold uppercase tracking-wide rounded-full;
+    background: var(--color-primary);
   }
 
   /* ═══════════════════════════════════════════════════
@@ -329,37 +342,43 @@
      ═══════════════════════════════════════════════════ */
 
   .trust-badge {
-    @apply inline-flex items-center gap-2;
-    @apply text-sm text-neutral-600;
+    @apply inline-flex items-center gap-2 text-sm text-neutral-600;
   }
 
   .trust-badge-icon {
-    @apply w-4 h-4 text-success;
+    width: 16px;
+    height: 16px;
+    color: var(--color-success);
   }
 
   /* ═══════════════════════════════════════════════════
-     ALERTS
+     ALERTS (semantic via vars)
      ═══════════════════════════════════════════════════ */
 
   .alert {
-    @apply p-4 rounded-lg;
-    @apply flex items-start gap-3;
+    @apply p-4 rounded-lg flex items-start gap-3;
   }
 
   .alert-info {
-    @apply alert bg-primary-50 text-primary-800;
+    @apply alert bg-neutral-100 text-neutral-800;
   }
 
   .alert-success {
-    @apply alert bg-success-light text-success-dark;
+    @apply alert;
+    background: var(--color-success-bg);
+    color: var(--color-success);
   }
 
   .alert-warning {
-    @apply alert bg-warning-light text-warning-dark;
+    @apply alert;
+    background: var(--color-warning-bg);
+    color: var(--color-warning);
   }
 
   .alert-error {
-    @apply alert bg-error-light text-error-dark;
+    @apply alert;
+    background: var(--color-error-bg);
+    color: var(--color-error);
   }
 }
 
